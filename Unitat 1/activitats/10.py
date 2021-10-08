@@ -1,0 +1,2 @@
+llista = range(101)
+
