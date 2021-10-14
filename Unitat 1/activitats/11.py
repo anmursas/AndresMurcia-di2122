@@ -1,6 +1,6 @@
 f = open("./txts/oper.txt", 'r', encoding='utf-8')
 
-#Operaciones
+# Operaciones
 suma = lambda var1, y: var1 + y
 resta = lambda var1, y: var1 - y
 multiplicacion = lambda var1, y: var1 * y
@@ -9,7 +9,7 @@ division = lambda var1, y: var1 / y
 text = f.read()
 x = text.strip()
 
-#solo hay numeros
+# solo hay numeros
 operands = []
 op = ""
 

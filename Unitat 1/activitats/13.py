@@ -1,22 +1,25 @@
 import random
-intentos = 0
-num = random.randint(0,100)
-while intentos < 100:
-    print("Adivina: ")
-    estimacion = input()
-    estimacion = int(estimacion)
 
-    intentos = intentos + 1
+acertado = False
+num = random.randint(0, 100)
+while not acertado:
+    try:
+        print("Adivina: ")
+        estimacion = input()
+        estimacion = int(estimacion)
+    except ValueError:
+        print("Error, valor no númerico")
+        break
+
     if estimacion < num:
-        print("Por bajo")
+        print("Muy bajo")
 
     if estimacion > num:
-        print("Por arriba")
+        print("Demasiado alto")
 
     if estimacion == num:
+        acertado = True
         break
 
 if estimacion == num:
-    intentos = str(intentos)
-    print("Buen trabajo has adivinado mi numero ", num ," en intentos: ", intentos)
-
+    print("Enhorabuena, has adivinado el número ", num)
