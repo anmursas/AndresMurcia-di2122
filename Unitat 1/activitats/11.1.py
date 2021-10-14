@@ -1,16 +1,37 @@
-f = open("./txts/prova.txt", 'r', encoding='utf-8')
-mensaje = f.read()
+f = open("./txts/oper.txt", 'r', encoding='utf-8')
 
-print(mensaje)
+#Operaciones
+suma = lambda var1, y: var1 + y
+resta = lambda var1, y: var1 - y
+multiplicacion = lambda var1, y: var1 * y
+division = lambda var1, y: var1 / y
 
-with open("./txts/prova.txt", 'w', encoding='utf-8') as f:
-    f.write("Primer arxiu\n")
-    f.write("Este arxiu\n")
-    f.write("conté tre línies\n")
-    f.close()
+text = f.read()
+x = text.strip()
 
-x = open("./txts/prova.txt", 'r', encoding='utf-8')
-x.read(6)
-x.read(6)
-x.read()
-x.close()
+#solo hay numeros
+operands = []
+op = ""
+
+for c in x.split():
+    if c.isdigit():
+        operands.append(c)
+    else:
+        op = c
+
+    if len(operands) == 2:
+        if op == "+":
+            res = suma(int(operands[0]), int(operands[1]))
+            print(operands[0], "+", operands[1], "=", res)
+        elif op == "-":
+            res = resta(int(operands[0]), int(operands[1]))
+            print(operands[0], "-", operands[1], "=", res)
+        elif op == "*":
+            res = multiplicacion(int(operands[0]), int(operands[1]))
+            print(operands[0], "*", operands[1], "=", res)
+        elif op == "/":
+            res = division(int(operands[0]), int(operands[1]))
+            print(operands[0], "/", operands[1], "=", res)
+        operands.clear()
+
+f.close()
