@@ -1,0 +1,5 @@
+f = open("./txts/oper.txt", 'r', encoding='utf-8')
+text = f.read()
+x = text.split("+")
+print(text)
+print(x)
