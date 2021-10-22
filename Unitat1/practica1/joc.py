@@ -2,9 +2,17 @@
 import pygame
 import pygame.locals
 import random
+import os.path
+
+from pygame import RLEACCEL
+
+# Path
+path = './resources'
+dirname = os.path.dirname(path)
+
 # Import pygame.locals for easier access to key coordinates
 # Updated to conform to flake8 and black standards
-from pygame import RLEACCEL
+
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -18,7 +26,7 @@ from pygame.locals import (
 # Initialize pygame
 pygame.init()
 
-# Setup for sounds. Defaults are good
+# Setup for sounds
 pygame.mixer.init()
 
 # Define constants for the screen width and height
@@ -34,7 +42,7 @@ clock = pygame.time.Clock()
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
-        self.surf = pygame.image.load("jet.png").convert()
+        self.surf = pygame.image.load("./resources/jet.png").convert()
         self.surf.set_colorkey((255, 255, 255), RLEACCEL)
         self.rect = self.surf.get_rect()
 
@@ -70,7 +78,7 @@ class Player(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
-        self.surf = pygame.image.load("missile.png").convert()
+        self.surf = pygame.image.load("resources/missile.png").convert()
         self.surf.set_colorkey((255, 255, 255), RLEACCEL)
         self.rect = self.surf.get_rect(
             center=(
@@ -93,7 +101,7 @@ class Enemy(pygame.sprite.Sprite):
 class Cloud(pygame.sprite.Sprite):
     def __init__(self):
         super(Cloud, self).__init__()
-        self.surf = pygame.image.load("cloud.png").convert()
+        self.surf = pygame.image.load("resources/cloud.png").convert()
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)
         # The starting position is randomly generated
         self.rect = self.surf.get_rect(
@@ -135,13 +143,13 @@ all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 
 # Load and play background music
-pygame.mixer.music.load("Apoxode_-_Electric_1.ogg")
+pygame.mixer.music.load("resources/Apoxode_-_Electric_1.ogg")
 pygame.mixer.music.play(loops=-1)
+
 # Load all sound files
-# Sound sources: Jon Fincher
-move_up_sound = pygame.mixer.Sound("Rising_putter.ogg")
-move_down_sound = pygame.mixer.Sound("Falling_putter.ogg")
-collision_sound = pygame.mixer.Sound("Collision.ogg")
+move_up_sound = pygame.mixer.Sound("resources/Rising_putter.ogg")
+move_down_sound = pygame.mixer.Sound("resources/Falling_putter.ogg")
+collision_sound = pygame.mixer.Sound("resources/Collision.ogg")
 
 # Variable to keep the main loop running
 running = True
