@@ -81,7 +81,7 @@ class Player(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
-        self.surf = pygame.image.load(os.path.join(res, "proy.png")).convert()
+        self.surf = pygame.image.load(os.path.join(res, "missile.png")).convert()
         self.surf.set_colorkey((255, 255, 255), RLEACCEL)
         self.rect = self.surf.get_rect(
             center=(
@@ -96,7 +96,7 @@ class Enemy(pygame.sprite.Sprite):
     def update(self):
         global scorev
         global nivell
-        global velocitatEnemies
+
         self.rect.move_ip(-self.speed, 0)
         if self.rect.right < 0:
             for e in enemies:
@@ -104,7 +104,6 @@ class Enemy(pygame.sprite.Sprite):
                     scorev += 10
                     if scorev % 500 == 0:
                         nivell += 1
-                        velocitatEnemies = 200 + (100 / nivell)
             self.kill()
 
 
@@ -131,6 +130,18 @@ class Cloud(pygame.sprite.Sprite):
             self.kill()
 
 
+# Definir un misil
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Bullet, self).__init__()
+        self.surf = pygame.image.load(os.path.join(res, "laser.png")).convert()
+        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
+        self.rect = self.surf.get_rect()
+
+    def update(self):
+        self.rect.x += 4
+
+
 # Score
 global scorev
 scorev = 0
@@ -143,9 +154,6 @@ nivell = 1
 
 textX = 10
 textY = 10
-
-global velocitatEnemies
-velocitatEnemies = 100
 
 
 def score(x, y):
@@ -202,7 +210,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Create a custom event for adding a new enemy
 ADDENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(ADDENEMY, velocitatEnemies)
+pygame.time.set_timer(ADDENEMY, int(50 + 200 / nivell))
 
 # Create a custom event for adding a new cloud
 ADDCLOUD = pygame.USEREVENT + 2
@@ -223,6 +231,7 @@ player = Player()
 enemies = pygame.sprite.Group()
 clouds = pygame.sprite.Group()
 balas = pygame.sprite.Group()
+
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 
@@ -269,8 +278,16 @@ while running:
         # Did the user hit a key?
         if event.type == KEYDOWN:
             # Was it the Escape key? If so, stop the loop.
+            if event.key == pygame.K_SPACE:
+                new_bullet = Bullet()
+                new_bullet.rect.x = player.rect.x + 45
+                new_bullet.rect.y = player.rect.y
+
+                balas.add(new_bullet)
+                all_sprites.add(new_bullet)
             if event.key == K_ESCAPE:
                 running = False
+
 
         # Did the user click the window close button? If so, stop the loop
         elif event.type == QUIT:
@@ -298,6 +315,15 @@ while running:
                 background = True
                 color_fons = 135, 206, 250
 
+    for laser in balas:
+        meteor_hit_list = pygame.sprite.spritecollide(laser, enemies, True)
+        for meteor in meteor_hit_list:
+            all_sprites.remove(laser)
+            balas.remove(laser)
+            scorev += 10
+        if laser.rect.x < -10:
+            all_sprites.remove(laser)
+            balas.remove(laser)
     # Get all the keys currently pressed
     pressed_keys = pygame.key.get_pressed()
     player.update(pressed_keys)
@@ -305,9 +331,7 @@ while running:
     # Update positions
     enemies.update()
     clouds.update()
-
-    # Fill the screen with blue
-    # color = [random.randint(0, 255) for i in range(3)]
+    balas.update()
 
     screen.fill(color_fons)
     # Mostra score i lvl
