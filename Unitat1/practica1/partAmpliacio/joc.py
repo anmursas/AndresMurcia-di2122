@@ -236,14 +236,14 @@ all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 
 # Load and play background music
-pygame.mixer.music.load("resources/Apoxode_-_Electric_1.ogg")
+pygame.mixer.music.load(os.path.join(res,"Apoxode_-_Electric_1.mp3"))
 pygame.mixer.music.set_volume(0.1)  # volumen del juego
 pygame.mixer.music.play(loops=-1)
 
 # Load all sound files
-move_up_sound = pygame.mixer.Sound(os.path.join(res, "Rising_putter.ogg"))
-move_down_sound = pygame.mixer.Sound(os.path.join(res, "Falling_putter.ogg"))
-collision_sound = pygame.mixer.Sound(os.path.join(res, "Collision.ogg"))
+move_up_sound = pygame.mixer.Sound(os.path.join(res, "Rising_putter.mp3"))
+move_down_sound = pygame.mixer.Sound(os.path.join(res, "Falling_putter.mp3"))
+collision_sound = pygame.mixer.Sound(os.path.join(res, "Collision.mp3"))
 move_down_sound.set_volume(0.1)
 move_up_sound.set_volume(0.1)
 
@@ -281,7 +281,7 @@ while running:
             if event.key == pygame.K_SPACE:
                 new_bullet = Bullet()
                 new_bullet.rect.x = player.rect.x + 45
-                new_bullet.rect.y = player.rect.y
+                new_bullet.rect.y = player.rect.y + 3
 
                 balas.add(new_bullet)
                 all_sprites.add(new_bullet)
