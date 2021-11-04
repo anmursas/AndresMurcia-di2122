@@ -96,7 +96,6 @@ class Enemy(pygame.sprite.Sprite):
     def update(self):
         global scorev
         global nivell
-
         self.rect.move_ip(-self.speed, 0)
         if self.rect.right < 0:
             for e in enemies:
@@ -130,7 +129,8 @@ class Cloud(pygame.sprite.Sprite):
             self.kill()
 
 
-# Definir un misil
+# Definir las balas
+# La bala se moverá a 5px/s
 class Bullet(pygame.sprite.Sprite):
     def __init__(self):
         super(Bullet, self).__init__()
@@ -139,33 +139,37 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect()
 
     def update(self):
-        self.rect.x += 4
+        self.rect.x += 5
 
 
-# Score
+# Definimos la variable global Scorev
+# Donde se almacenará la puntuación
 global scorev
 scorev = 0
 
-font = pygame.font.Font('freesansbold.ttf', 25)
-
-# Nivell
+# Definimos la variable global nivell
+# Donde se almacenará el nivel actual
 global nivell
 nivell = 1
 
-textX = 10
-textY = 10
+font = pygame.font.Font('freesansbold.ttf', 25)
 
 
+# La función score recibe dos argumentos
+# X e Y será la posición en la que se mostrará la puntuación
 def score(x, y):
     score = font.render("Score: " + str(scorev), True, (255, 255, 255))
     screen.blit(score, (x, y))
 
 
+# Idem score pero con el Nivel
 def mostranivell(x, y):
     level = font.render("Nivell: " + str(nivell), True, (255, 255, 255))
     screen.blit(level, (x, y))
 
 
+# Nos conectamos a la base de datos
+# En esta bd se almacena la puntuación máxima
 def connexion():
     try:
         sqliteConnection = sqlite3.connect((os.path.join(res, "max_score.db")))
@@ -174,22 +178,26 @@ def connexion():
         print(Error)
 
 
+# Creamos un objeto con y creamos un cursor a partir de éste
 con = connexion()
 cursor = con.cursor()
 
-
+# Ejecutamos la consulta
+# Almacenamos la respuesta y será lo que devuelva la función
 def leersql():
     cursor.execute("SELECT score FROM punts")
     row = cursor.fetchone()
     return row[0]
 
-
+# Si la consulta a la base de datos es menor que nuestra puntuación
+# Guardamos nuestra puntuación actual dentor de la base de datos
 def updatesql():
     if leersql() < scorev:
         cursor.execute("update punts set score = " + str(scorev))
         con.commit()
 
-
+# Esta pantalla se muestra cuando perdemos
+# Nos muestra nuestra puntuación y si hemos superado el récord
 def pantalla_final():
     screen.fill((0, 0, 0))
     intro_label = font.render("La partida ha finalitzat", 1, (255, 255, 255))
@@ -236,7 +244,7 @@ all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 
 # Load and play background music
-pygame.mixer.music.load(os.path.join(res,"Apoxode_-_Electric_1.mp3"))
+pygame.mixer.music.load(os.path.join(res, "Apoxode_-_Electric_1.mp3"))
 pygame.mixer.music.set_volume(0.1)  # volumen del juego
 pygame.mixer.music.play(loops=-1)
 
@@ -335,7 +343,7 @@ while running:
 
     screen.fill(color_fons)
     # Mostra score i lvl
-    score(textX, textY)
+    score(10, 10)
     mostranivell(10, 50)
 
     for entity in all_sprites:
