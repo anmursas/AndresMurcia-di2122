@@ -10,6 +10,11 @@ class MainWindow(QMainWindow):
 
         self.setFixedSize(QSize(520, 300))
         self.setWindowTitle("Exemple signals-slots 1")
+        pantalla = QApplication.primaryScreen().size()
+
+        self.move(
+            (((pantalla.width()) - self.width()) * 0.5),
+            (((pantalla.height()) - self.width()) * 0.5))
 
         self.max = QPushButton('maxim', self)
         self.min = QPushButton('minim', self)

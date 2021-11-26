@@ -5,16 +5,15 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
 parser = argparse.ArgumentParser()
 parser.add_argument("-t", "--title", help="Title of application")
 parser.add_argument("-b", "--button-text", help="Button text")
-parser.add_argument("-f", "--fixed-size", action="store_true",
-                    help="Window fixed size")
-parser.add_argument("-s", "--size", nargs=2, metavar=("SIZE_X", "SIZE_Y"), type=int,
-                    help="Window's size")
+parser.add_argument("-f", "--fixed-size", action="store_true", help="Window fixed size")
+parser.add_argument("-s", "--size", nargs=2, metavar=("SIZE_X", "SIZE_Y"), type=int, help="Window's size")
 args = parser.parse_args()
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
         title, text, fixed, size_x, size_y = "APP", "Close", False, 300, 200
         if args.title:
             title = args.title
@@ -36,7 +35,6 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(self.button)
 
-        # self.setFixedSize(400,600)
         self.button.setMaximumSize(100, 25)
         self.setMaximumSize(400, 400)
         self.setMinimumSize(200, 200)
