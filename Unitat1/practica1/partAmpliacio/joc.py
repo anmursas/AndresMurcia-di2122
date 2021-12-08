@@ -182,6 +182,7 @@ def connexion():
 con = connexion()
 cursor = con.cursor()
 
+
 # Ejecutamos la consulta
 # Almacenamos la respuesta y será lo que devuelva la función
 def leersql():
@@ -189,12 +190,14 @@ def leersql():
     row = cursor.fetchone()
     return row[0]
 
+
 # Si la consulta a la base de datos es menor que nuestra puntuación
 # Guardamos nuestra puntuación actual dentor de la base de datos
 def updatesql():
     if leersql() < scorev:
         cursor.execute("update punts set score = " + str(scorev))
         con.commit()
+
 
 # Esta pantalla se muestra cuando perdemos
 # Nos muestra nuestra puntuación y si hemos superado el récord
