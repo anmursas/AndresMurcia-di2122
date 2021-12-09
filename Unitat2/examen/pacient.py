@@ -80,7 +80,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.widget)
 
     def pressed_button(self):
-        file = open("registre.txt", "a")
+        file = open("registre.txt", "w")
         file.write(self.nom.text() + "\n")
         file.write(self.dni.text() + "\n")
         file.write(self.sexe.currentText() + "\n")
