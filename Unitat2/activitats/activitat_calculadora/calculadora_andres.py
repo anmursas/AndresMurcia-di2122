@@ -62,7 +62,7 @@ class calculadora_estandar(QMainWindow):
             '√': (0, 0),
             'π': (0, 1),
             '**': (0, 2),
-            'DELETE': (0, 3),
+            '<=': (0, 3),
             '(': (1, 0),
             ')': (1, 1),
             '%': (1, 2),
@@ -177,30 +177,30 @@ class calculadora_cientifica(QMainWindow):
             '√': (0, 0),
             'π': (0, 1),
             '**': (0, 2),
-            'DELETE': (0, 3),
-            'log': (0, 4),
+            '<=': (0, 3),
+            'sin': (0, 4),
             '(': (1, 0),
             ')': (1, 1),
             '%': (1, 2),
             '/': (1, 3),
-            'ln': (1, 4),
+            'cos': (1, 4),
             '7': (2, 0),
             '8': (2, 1),
             '9': (2, 2),
             '*': (2, 3),
-            'n!': (2, 4),
+            'tan': (2, 4),
             '4': (3, 0),
             '5': (3, 1),
             '6': (3, 2),
             '+': (3, 3),
-            'e': (3, 4),
+            'log': (3, 4),
             '1': (4, 0),
             '2': (4, 1),
             '3': (4, 2),
             '-': (4, 3),
-            'x/y': (4, 4),
-            '0': (5, 0),
-            '.': (5, 1),
+            '!': (4, 4),
+            '.': (5, 0),
+            '0': (5, 1),
             'CE': (5, 2),
             '=': (5, 3),
             '|x|': (5, 4),
@@ -256,10 +256,10 @@ def crear_botones(self):
         self.buttons[btn].setFont(QFont('Arial', 15))
         self.buttons[btn].setStyleSheet("background-color: black; color: white")
         self.buttons[btn].setShortcut(btn)
+        # Añadimos el boton con su posición
         layout_buttons.addWidget(self.buttons[btn], pos[0], pos[1])
-    '''    if btn == "DELETE":
-            self.buttons[btn].setText("<=") '''
-    # Añadimos el boton con su posición
+        if btn == "<=":
+            self.buttons[btn].setShortcut(QKeySequence("DELETE"))
 
     # Añadimos el layout de botones al layout principal
     self.main_layout.addLayout(layout_buttons)
@@ -267,13 +267,13 @@ def crear_botones(self):
 
 def conectar_botones(self):
     for text, boto in self.buttons.items():
-        if text not in {"=", "C", "DELETE"}:
+        if text not in {"=", "C", "<="}:
             boto.clicked.connect(partial(self.build, text))
     # Excepciones
     self.buttons["="].clicked.connect(self.calc)
     self.line.returnPressed.connect(self.calc)
     self.buttons["CE"].clicked.connect(self.clear)
-    self.buttons["DELETE"].clicked.connect(self.clear_char)
+    self.buttons["<="].clicked.connect(self.clear_char)
 
 
 # Pasado el parámetro hace un eval de este
