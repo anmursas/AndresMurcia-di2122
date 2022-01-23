@@ -9,13 +9,13 @@ from PySide6.QtWidgets import (
 )
 
 
-class WindowAdmin(QMainWindow):
-    def __init__(self):
+class MainWindow(QMainWindow):
+    def __init__(self, mode):
         super().__init__()
-        self.setWindowTitle("Admin")
+        self.setWindowTitle("Login")
         main_menu = self.menuBar()
         menu = main_menu.addMenu("&Menu")
-        logout = QAction("$Tancar sessió", self)
+        logout = QAction("&Tancar sessió", self)
         logout.triggered.connect(self.logout)
         menu.addAction(logout)
         menu.addSeparator()
@@ -27,65 +27,26 @@ class WindowAdmin(QMainWindow):
         self.widget = QWidget()
         layout = QVBoxLayout(self.widget)
 
-        self.label = QLabel("Has entrat com administrador")
+        self.label = QLabel(f"Has entrat com {mode}")
         layout.addWidget(self.label)
         self.setLayout(layout)
 
         self.setStatusBar(QStatusBar(self))
-        self.mode = QLabel("Admin")
+        self.mode = QLabel(mode)
         self.statusBar().addPermanentWidget(self.mode)
 
         self.setCentralWidget(self.widget)
 
-    def logout(self):
-        self.main = MainWindow()
 
-        if self.main.isVisible():
-            self.main.hide()
-        else:
-            self.hide()
-            self.main.show()
-
-
-class WindowUser(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("User")
-        main_menu = self.menuBar()
-        menu = main_menu.addMenu("&Menu")
-        logout = QAction("$Tancar sessió", self)
-        logout.triggered.connect(self.logout)
-        menu.addAction(logout)
-        menu.addSeparator()
-
-        exit = QAction("Exit", self)
-        exit.triggered.connect(self.close)
-        menu.addAction(exit)
-
-        self.widget = QWidget()
-        layout = QVBoxLayout(self.widget)
-
-        self.label = QLabel("Has entrat com usuari")
-        layout.addWidget(self.label)
-        self.setLayout(layout)
-
-        self.setStatusBar(QStatusBar(self))
-        self.mode = QLabel("User")
-        self.statusBar().addPermanentWidget(self.mode)
-
-        self.setCentralWidget(self.widget)
 
     def logout(self):
-        self.main = MainWindow()
+        self.main = Login()
 
-        if self.main.isVisible():
-            self.main.hide()
-        else:
-            self.hide()
-            self.main.show()
+        self.main.show()
+        self.close()
 
 
-class MainWindow(QWidget):
+class Login(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -120,12 +81,12 @@ class MainWindow(QWidget):
         contra = self.password_edit.text()
 
         if user == "admin" and contra == "1234":
-            self.windowAdmin = WindowAdmin()
+            self.windowAdmin = MainWindow("admin")
             self.close()
             self.windowAdmin.show()
         else:
             if user == "user" and contra == "1234":
-                self.windowUsers = WindowUser()
+                self.windowUsers = MainWindow("user")
                 self.close()
                 self.windowUsers.show()
             else:
@@ -134,6 +95,6 @@ class MainWindow(QWidget):
 
 
 app = QApplication(sys.argv)
-window = MainWindow()
+window = Login()
 window.show()
 app.exec()
